@@ -296,7 +296,7 @@ addSeven(6)
 Use `Array.prototype.slice.call` to cast array-like objects to true arrays.
 
 ```js
-var args = Array.prototype.slice.call(arguments);
+var args = [].slice.call(arguments)
 ```
 
 Use [event emitters](https://github.com/bevacqua/contra#%CE%BBemitterthing-options) on all the things!
