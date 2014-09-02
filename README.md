@@ -711,7 +711,7 @@ function onThingHappended(cb){
       , dragonball = 'z'
     ```
 
-  - Declare unassigned variables last. This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables.
+  - Declare unassigned variables last. This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables. You should give "unassigned" variables a default value. This allows modern JS engines like V8 to better optimize. It also makes the code more readable.
 
     ```javascript
     // bad
@@ -728,9 +728,9 @@ function onThingHappended(cb){
     // good
     var items = getItems()
       , goSportsTeam = true
-      , dragonball
-      , length
-      , i
+      , dragonball = {}
+      , length = 0
+      , i = 0
     ```
 
   - Assign variables at the top of their scope. This helps avoid issues with variable declaration and assignment hoisting related issues.
