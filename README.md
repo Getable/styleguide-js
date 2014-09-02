@@ -302,18 +302,18 @@ var args = [].slice.call(arguments)
 Use [event emitters](https://github.com/bevacqua/contra#%CE%BBemitterthing-options) on all the things!
 
 ```js
-var emitter = contra.emitter();
+var emitter = new Backbone.Events()
 
-body.addEventListener('click', function () {
-  emitter.emit('click', e.target);
-});
+$body.on('click', function onBodyClick(e){
+  emitter.trigger('click', e.target)
+})
 
-emitter.on('click', function (elem) {
-  console.log(elem);
-});
+emitter.on('click', function onEmitterClick(elem) {
+  console.log(elem)
+})
 
 // simulate click
-emitter.emit('click', document.body);
+emitter.trigger('click', document.body)
 ```
 
 Use `Function()` as a _"no-op"_.
