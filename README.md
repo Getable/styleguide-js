@@ -319,8 +319,8 @@ emitter.trigger('click', document.body)
 Use `Function()` as a _"no-op"_.
 
 ```js
-function (cb) {
-  setTimeout(cb || Function(), 2000);
+function onThingHappended(cb){
+  setTimeout(cb || Function(), 2000)
 }
 ```
 
@@ -608,10 +608,45 @@ function (cb) {
     }
 
     // good
-    function yup(name, options, args){
+    var yup = function yup(name, options, args){
       // …stuff…
     }
     ```
+
+  - **Always prefer named functions** This makes debugging much easier.
+  - You should assign a function to a variable. This makes hoisting easier to reason about.
+
+  - Never put spaces immediately after an opening parens or immediately before a closing parens.
+
+      ```javascript
+      // bad
+      var bad = function ( badness, devils, misery ) {
+
+      }
+
+      // good
+      var good = function good(happiness, heaven, cheesecake){
+
+      }
+      ```
+
+  - Avoid creating functions that accept more than 3 arguments. You should probably pass a single options argument instead.
+
+      ```javascript
+      // bad
+      var manyThings = function manyThings(first, second, moar, evenMoar){
+
+      }
+
+      // good
+      var manyThings = function manyThings(options){
+        /*
+        options.first
+        options.second
+        etc…
+        */
+      }
+      ```
 
 
 
