@@ -211,27 +211,30 @@ Comments **aren't meant to explain what** the code does. Good **code is supposed
 
 ```js
 // create the centered container
-var p = $('<p/>');
-p.center(div);
-p.text('foo');
+var p = $('<p/>')
+p.center(div)
+p.text('foo')
 ```
 
 #### Good
 
 ```js
-var container = $('<p/>');
-var contents = 'foo';
-container.center(parent);
-container.text(contents);
-megaphone.on('data', function (value) {
-  container.text(value); // the megaphone periodically emits updates for container
-});
+var $container = $('<p/>')
+  , contents = 'foo'
+
+$container.center(parent)
+$container.text(contents)
+
+megaphone.on('data', function(value){
+  // the megaphone periodically emits updates for container
+  container.text(value)
+})
 ```
 
 ```js
-var numeric = /\d+/; // one or more digits somewhere in the string
-if (numeric.test(text)) {
-  console.log('so many numbers!');
+var numeric = /\d+/ // one or more digits somewhere in the string
+if (numeric.test(text)){
+  console.log('so many numbers!')
 }
 ```
 
@@ -245,7 +248,7 @@ Variables must have meaningful names so that you don't have to resort to comment
 
 ```js
 function a (x, y, z) {
-  return z * y / x;
+  return z * y / x
 }
 a(4, 2, 6);
 // <- 3
@@ -255,9 +258,9 @@ a(4, 2, 6);
 
 ```js
 function ruleOfThree (had, got, have) {
-  return have * got / had;
+  return have * got / had
 }
-ruleOfThree(4, 2, 6);
+ruleOfThree(4, 2, 6)
 // <- 3
 ```
 
@@ -272,22 +275,21 @@ If you can't patch a piece of functionality with a polyfill, then [wrap all uses
 Use `||` to define a default value. If the left-hand value is [falsy][29] then the right-hand value will be used.
 
 ```js
-function a (value) {
-  var defaultValue = 33;
-  var used = value || defaultValue;
+function a(value){
+  var defaultValue = 33
+  var used = value || defaultValue
 }
 ```
 
 Use `.bind` to [partially-apply](http://ejohn.org/blog/partial-functions-in-javascript/) functions.
 
 ```js
-function sum (a, b) {
-  return a + b;
-}
+var sum = function sum(a, b){
+    return a + b
+  }
+  , addSeven = sum.bind(null, 7)
 
-var addSeven = sum.bind(null, 7);
-
-addSeven(6);
+addSeven(6)
 // <- 13
 ```
 
