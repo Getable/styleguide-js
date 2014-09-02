@@ -1398,7 +1398,7 @@ function onThingHappended(cb){
     this._firstName = 'Panda'
     ```
 
-  - When saving a reference to `this` use `self`.
+  - When saving a reference to `this` use `self`. Avoid using self unless absolutely necessary. Pefer `_.bind()`
 
     ```javascript
     // bad
@@ -1417,9 +1417,16 @@ function onThingHappended(cb){
       }
     }
 
+    // bad
+    function(){
+      var self = this
+      self.thing = true
+    }
+
     // good
     function(){
       var self = this
+      this.thing = true
       return function(){
         console.log(self)
       }
