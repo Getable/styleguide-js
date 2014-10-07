@@ -1,6 +1,8 @@
 # JavaScript Style Guide
 
-*A mostly reasonable approach to JavaScript*
+A mostly reasonable approach to JavaScript.
+
+_TL;DR_ Basically, [the npm styleguide](https://docs.npmjs.com/misc/npm-coding-style).
 
 ### Table of Contents
 
