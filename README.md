@@ -1189,10 +1189,10 @@ function onThingHappended(cb){
 
     // good
     var hero = {
-        firstName: 'Bob'
-      , lastName: 'Parr'
-      , heroName: 'Mr. Incredible'
-      , superPower: 'strength'
+      firstName: 'Bob'
+    , lastName: 'Parr'
+    , heroName: 'Mr. Incredible'
+    , superPower: 'strength'
     }
     ```
 
@@ -1232,19 +1232,49 @@ function onThingHappended(cb){
     ```javascript
     // bad
     var hero = {
-        firstName: 'Bob'
-        , lastName: 'Parr'
-        , heroName: 'Mr. Incredible'
-        , superPower: 'strength'
+      firstName: 'Bob'
+      , lastName: 'Parr'
+      , heroName: 'Mr. Incredible'
+      , superPower: 'strength'
     }
     
+    hero.extend({
+      mask: true
+      , cape: {
+        color: 'red'
+        , length: 'medium'
+      }
+      , hairstyle: 'pompadour'
+    })
+    
     // good
+    var hero = {
+      firstName: 'Bob'
+    , lastName: 'Parr'
+    , heroName: 'Mr. Incredible'
+    , superPower: 'strength'
+    }
+    
+    hero.extend({
+      mask: true
+    , cape: {
+        color: 'red'
+      , length: 'medium'
+      }
+    , hairstyle: 'pompadour'
+    })
+    
+    //acceptable
     var hero = {
         firstName: 'Bob'
       , lastName: 'Parr'
       , heroName: 'Mr. Incredible'
       , superPower: 'strength'
     }
+    
+    var mecha
+      , lecha
+      , hiney
     ```
 
 
