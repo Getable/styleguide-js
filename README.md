@@ -60,9 +60,9 @@ Automatic Semicolon Insertion _(ASI)_ is a [complicated feature](http://www.2ali
 
 ### Style Checking
 
-Tools like [jscs](https://github.com/jscs-dev/node-jscs) can strictly enforce a code style. This makes it easy to ensure that developers can look at code they didn't write and more quickly understand what's going on. However, style-checking failures can be painful to deal with. Leave the implementation up to the team working the the project.
+Tools like [jscs](https://github.com/jscs-dev/node-jscs) and [eslint](https://eslint.org) can strictly enforce a code style. This makes it easy to ensure that developers can look at code they didn't write and more quickly understand what's going on. However, style-checking failures can be painful to deal with. Leave the implementation up to the team working the the project.
 
-Generally, these work well in small projects. A sample `.jscrc` is in this repo.
+Generally, these work well in small projects. A sample `.jscrc` and `.eslintrc` is in this repo.
 
 ### Linting
 
@@ -71,7 +71,7 @@ Linting is **always a great idea**. Don't use a linter that's super opinionated 
 #### A few tips when using JSHint
 
 - Declare a `.jshintignore` file and include `node_modules`, `bower_components`, and the like
-- You should use a `.jshintrc` file to keep your rules together. See the one in this repo.
+- You should use a `.eslintrc` file to keep your rules together. See the one in this repo.
 
 ### Events
 
@@ -570,7 +570,7 @@ function onThingHappended(cb){
     }
 
     // named function expression
-    var named = function named(){
+    var named = function named (){
       return true
     }
 
@@ -586,7 +586,7 @@ function onThingHappended(cb){
     ```javascript
     // bad
     if (currentUser){
-      function test(){
+      function test (){
         console.log('Nope.')
       }
     }
@@ -594,7 +594,7 @@ function onThingHappended(cb){
     // good
     var test
     if (currentUser){
-      test = function test(){
+      test = function test (){
         console.log('Yup.')
       }
     }
@@ -609,7 +609,7 @@ function onThingHappended(cb){
     }
 
     // good
-    var yup = function yup(name, options, args){
+    var yup = function yup (name, options, args){
       // …stuff…
     }
     ```
@@ -626,7 +626,7 @@ function onThingHappended(cb){
       }
 
       // good
-      var good = function good(happiness, heaven, cheesecake){
+      var good = function good (happiness, heaven, cheesecake){
 
       }
       ```
@@ -635,12 +635,12 @@ function onThingHappended(cb){
 
       ```javascript
       // bad
-      var manyThings = function manyThings(first, second, moar, evenMoar){
+      var manyThings = function manyThings (first, second, moar, evenMoar){
 
       }
 
       // good
-      var manyThings = function manyThings(options){
+      var manyThings = function manyThings (options){
         /*
         options.first
         options.second
@@ -1083,12 +1083,12 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    function test() {
+    function test () {
       console.log('test')
     }
 
     // good
-    function test(){
+    function test (){
       console.log('test')
     }
 
@@ -1232,7 +1232,7 @@ function onThingHappended(cb){
 ### Semicolons
 
   - **NO.**
-  - ASI means that you almost never need semicolons. Leave 'em out and live free! JsHint will catch nearly any error you might make.
+  - ASI means that you almost never need semicolons. Leave them out and live free! JsHint will catch nearly any error you might make.
 
     ```javascript
     // bad
@@ -1443,7 +1443,7 @@ function onThingHappended(cb){
     }
 
     // good
-    var log = function log(msg){
+    var log = function log (msg){
       console.log(msg)
     }
     ```
@@ -1514,21 +1514,21 @@ function onThingHappended(cb){
 
     // bad
     Jedi.prototype = {
-      fight: function fight(){
+      fight: function fight (){
         console.log('fighting')
       },
 
-      block: function block(){
+      block: function block (){
         console.log('blocking')
       }
     }
 
     // good
-    Jedi.prototype.fight = function fight(){
+    Jedi.prototype.fight = function fight (){
       console.log('fighting')
     }
 
-    Jedi.prototype.block = function block(){
+    Jedi.prototype.block = function block (){
       console.log('blocking')
     }
     ```
@@ -1576,11 +1576,11 @@ function onThingHappended(cb){
       this.name = options.name || 'no name'
     }
 
-    Jedi.prototype.getName = function getName(){
+    Jedi.prototype.getName = function getName (){
       return this.name
     }
 
-    Jedi.prototype.toString = function toString(){
+    Jedi.prototype.toString = function toString (){
       return 'Jedi - ' + this.getName()
     }
     ```
