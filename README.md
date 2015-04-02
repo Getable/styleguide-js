@@ -6,12 +6,13 @@ _TL;DR_ Basically, [the npm styleguide](https://docs.npmjs.com/misc/npm-coding-s
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
 - [Best Practices](#best-practices)
   - [Semicolons`;`](#semicolons)
   - [Style Checking](#style-checking)
   - [Linting](#linting)
+    - [A few tips when using JSHint](#a-few-tips-when-using-jshint)
   - [Events](#events)
   - [Modules](#modules)
   - [jQuery](#jquery)
@@ -19,7 +20,11 @@ _TL;DR_ Basically, [the npm styleguide](https://docs.npmjs.com/misc/npm-coding-s
   - [Testing](#testing)
   - [`console` statements [console statements]](#console-statements-console-statements)
   - [Comments](#comments)
+    - [Bad](#bad)
+    - [Good](#good)
   - [Variable Naming](#variable-naming)
+    - [Bad](#bad-1)
+    - [Good](#good-1)
   - [Polyfills](#polyfills)
   - [Everyday Tricks](#everyday-tricks)
   - [Performance](#performance)
