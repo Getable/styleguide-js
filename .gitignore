@@ -6,6 +6,8 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.patch
+*.swp
 .DS_store
 
 pids
@@ -14,3 +16,5 @@ results
 
 npm-debug.log
 node_modules
+
+test/temp
