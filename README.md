@@ -1,56 +1,62 @@
 # JavaScript Style Guide
 
-*A mostly reasonable approach to JavaScript*
+A mostly reasonable approach to JavaScript.
 
-### Table of Contents
+_TL;DR_ Basically, [the npm styleguide](https://docs.npmjs.com/misc/npm-coding-style).
 
-<!-- MarkdownTOC -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
 - [Best Practices](#best-practices)
-    - [Semicolons`;`](#semicolons)
-    - [Style Checking](#style-checking)
-    - [Linting](#linting)
-    - [Events](#events)
-    - [Modules](#modules)
-    - [jQuery](#jquery)
-    - [ECMAScript 5 Compatibility](#es5)
-    - [Testing](#testing)
-    - [`console` statements](#console statements)
-    - [Comments](#comments)
-    - [Variable Naming](#variable-naming)
-    - [Polyfills](#polyfills)
-    - [Everyday Tricks](#everyday-tricks)
-    - [Performance](#performance)
+  - [Semicolons`;`](#semicolons)
+  - [Style Checking](#style-checking)
+  - [Linting](#linting)
+    - [A few tips when using JSHint](#a-few-tips-when-using-jshint)
+  - [Events](#events)
+  - [Modules](#modules)
+  - [jQuery](#jquery)
+  - [ECMAScript 5 Compatibility [es5]](#ecmascript-5-compatibility-es5)
+  - [Testing](#testing)
+  - [`console` statements [console statements]](#console-statements-console-statements)
+  - [Comments](#comments)
+    - [Bad](#bad)
+    - [Good](#good)
+  - [Variable Naming](#variable-naming)
+    - [Bad](#bad-1)
+    - [Good](#good-1)
+  - [Polyfills](#polyfills)
+  - [Everyday Tricks](#everyday-tricks)
+  - [Performance](#performance)
 - [Syntax](#syntax)
-    - [Types](#types)
-    - [Objects](#objects)
-    - [Arrays](#arrays)
-    - [Strings](#strings)
-    - [Functions](#functions)
-    - [Properties](#properties)
-    - [Variables](#variables)
-    - [Hoisting](#hoisting)
-    - [Conditional Expressions & Equality](#conditional-expressions)
-    - [Blocks](#blocks)
-    - [Comments](#comments-1)
-    - [Whitespace](#whitespace)
-    - [Commas](#commas)
-    - [Semicolons](#semicolons-1)
-    - [Type Casting & Coercion](#type-casting--coercion)
-    - [Naming Conventions](#naming-conventions)
-    - [Accessors](#accessors)
-    - [Constructors](#constructors)
+  - [Types](#types)
+  - [Objects](#objects)
+  - [Arrays](#arrays)
+  - [Strings](#strings)
+  - [Functions](#functions)
+  - [Properties](#properties)
+  - [Variables](#variables)
+  - [Hoisting](#hoisting)
+  - [Conditional Expressions & Equality [conditional-expressions]](#conditional-expressions-&-equality-conditional-expressions)
+  - [Blocks](#blocks)
+  - [Comments](#comments-1)
+  - [Whitespace](#whitespace)
+  - [Commas](#commas)
+  - [Semicolons](#semicolons)
+  - [Type Casting & Coercion](#type-casting-&-coercion)
+  - [Naming Conventions](#naming-conventions)
+  - [Accessors](#accessors)
+  - [Constructors](#constructors)
 - [Resources](#resources)
-    - [Read This](#read-this)
-    - [Other Styleguides](#other-styleguides)
-    - [Other Styles](#other-styles)
-    - [Further Reading](#further-readingj)
-    - [Books](#books)
-    - [Blogs](#blogs)
+  - [Read This [read-this]](#read-this-read-this)
+  - [Other Styleguides [other-styleguides]](#other-styleguides-other-styleguides)
+  - [Other Styles [other-styles]](#other-styles-other-styles)
+  - [Further Reading [further-readingj]](#further-reading-further-readingj)
+  - [Books](#books)
+  - [Blogs](#blogs)
 - [License](#license)
 
-<!-- /MarkdownTOC -->
-
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Best Practices
 ### Semicolons`;`
@@ -59,9 +65,9 @@ Automatic Semicolon Insertion _(ASI)_ is a [complicated feature](http://www.2ali
 
 ### Style Checking
 
-Tools like [jscs](https://github.com/jscs-dev/node-jscs) can strictly enforce a code style. This makes it easy to ensure that developers can look at code they didn't write and more quickly understand what's going on. However, style-checking failures can be painful to deal with. Leave the implementation up to the team working the the project.
+Tools like [jscs](https://github.com/jscs-dev/node-jscs) and [eslint](https://eslint.org) can strictly enforce a code style. This makes it easy to ensure that developers can look at code they didn't write and more quickly understand what's going on. However, style-checking failures can be painful to deal with. Leave the implementation up to the team working the the project.
 
-Generally, these work well in small projects. A sample `.jscrc` is in this repo.
+Generally, these work well in small projects. A sample `.jscrc` and `.eslintrc` is in this repo.
 
 ### Linting
 
@@ -70,7 +76,7 @@ Linting is **always a great idea**. Don't use a linter that's super opinionated 
 #### A few tips when using JSHint
 
 - Declare a `.jshintignore` file and include `node_modules`, `bower_components`, and the like
-- You should use a `.jshintrc` file to keep your rules together. See the one in this repo.
+- You should use a `.eslintrc` file to keep your rules together. See the one in this repo.
 
 ### Events
 
@@ -569,7 +575,7 @@ function onThingHappended(cb){
     }
 
     // named function expression
-    var named = function named(){
+    var named = function named (){
       return true
     }
 
@@ -585,7 +591,7 @@ function onThingHappended(cb){
     ```javascript
     // bad
     if (currentUser){
-      function test(){
+      function test (){
         console.log('Nope.')
       }
     }
@@ -593,7 +599,7 @@ function onThingHappended(cb){
     // good
     var test
     if (currentUser){
-      test = function test(){
+      test = function test (){
         console.log('Yup.')
       }
     }
@@ -608,7 +614,7 @@ function onThingHappended(cb){
     }
 
     // good
-    var yup = function yup(name, options, args){
+    var yup = function yup (name, options, args){
       // …stuff…
     }
     ```
@@ -625,7 +631,7 @@ function onThingHappended(cb){
       }
 
       // good
-      var good = function good(happiness, heaven, cheesecake){
+      var good = function good (happiness, heaven, cheesecake){
 
       }
       ```
@@ -634,12 +640,12 @@ function onThingHappended(cb){
 
       ```javascript
       // bad
-      var manyThings = function manyThings(first, second, moar, evenMoar){
+      var manyThings = function manyThings (first, second, moar, evenMoar){
 
       }
 
       // good
-      var manyThings = function manyThings(options){
+      var manyThings = function manyThings (options){
         /*
         options.first
         options.second
@@ -1082,12 +1088,12 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    function test() {
+    function test () {
       console.log('test')
     }
 
     // good
-    function test(){
+    function test (){
       console.log('test')
     }
 
@@ -1231,7 +1237,7 @@ function onThingHappended(cb){
 ### Semicolons
 
   - **NO.**
-  - ASI means that you almost never need semicolons. Leave 'em out and live free! JsHint will catch nearly any error you might make.
+  - ASI means that you almost never need semicolons. Leave them out and live free! JsHint will catch nearly any error you might make.
 
     ```javascript
     // bad
@@ -1442,7 +1448,7 @@ function onThingHappended(cb){
     }
 
     // good
-    var log = function log(msg){
+    var log = function log (msg){
       console.log(msg)
     }
     ```
@@ -1513,21 +1519,21 @@ function onThingHappended(cb){
 
     // bad
     Jedi.prototype = {
-      fight: function fight(){
+      fight: function fight (){
         console.log('fighting')
       },
 
-      block: function block(){
+      block: function block (){
         console.log('blocking')
       }
     }
 
     // good
-    Jedi.prototype.fight = function fight(){
+    Jedi.prototype.fight = function fight (){
       console.log('fighting')
     }
 
-    Jedi.prototype.block = function block(){
+    Jedi.prototype.block = function block (){
       console.log('blocking')
     }
     ```
@@ -1575,11 +1581,11 @@ function onThingHappended(cb){
       this.name = options.name || 'no name'
     }
 
-    Jedi.prototype.getName = function getName(){
+    Jedi.prototype.getName = function getName (){
       return this.name
     }
 
-    Jedi.prototype.toString = function toString(){
+    Jedi.prototype.toString = function toString (){
       return 'Jedi - ' + this.getName()
     }
     ```
