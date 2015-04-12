@@ -1195,10 +1195,10 @@ function onThingHappended(cb){
 
     // good
     var hero = {
-        firstName: 'Bob'
-      , lastName: 'Parr'
-      , heroName: 'Mr. Incredible'
-      , superPower: 'strength'
+      firstName: 'Bob'
+    , lastName: 'Parr'
+    , heroName: 'Mr. Incredible'
+    , superPower: 'strength'
     }
     ```
 
@@ -1210,28 +1210,78 @@ function onThingHappended(cb){
     // bad
     var hero = {
       firstName: 'Kevin'
-      , lastName: 'Flynn'
-      ,
+    , lastName: 'Flynn'
+    ,
     }
 
     var heroes = [
       'Batman'
-      , 'Superman'
-      ,
+    , 'Superman'
+    ,
     ]
 
     // good
     var hero = {
       firstName: 'Kevin'
-      , lastName: 'Flynn'
+    , lastName: 'Flynn'
     }
 
     var heroes = [
       'Batman'
-      , 'Superman'
+    , 'Superman'
     ]
     ```
+    
+    
+  - Finally, commas should be aligned to be flush with the scope/declaration they exist under. This avoids using unecesarry whitespace/line-width bloating, as well as avoids the appearance of nesting where such is not the case. Think of it like a bullet-point list.
 
+    ```javascript
+    // bad
+    var hero = {
+      firstName: 'Bob'
+      , lastName: 'Parr'
+      , heroName: 'Mr. Incredible'
+      , superPower: 'strength'
+    }
+    
+    hero.extend({
+      mask: true
+      , cape: {
+        color: 'red'
+        , length: 'medium'
+      }
+      , hairstyle: 'pompadour'
+    })
+    
+    // good
+    var hero = {
+      firstName: 'Bob'
+    , lastName: 'Parr'
+    , heroName: 'Mr. Incredible'
+    , superPower: 'strength'
+    }
+    
+    hero.extend({
+      mask: true
+    , cape: {
+        color: 'red'
+      , length: 'medium'
+      }
+    , hairstyle: 'pompadour'
+    })
+    
+    //acceptable
+    var hero = {
+        firstName: 'Bob'
+      , lastName: 'Parr'
+      , heroName: 'Mr. Incredible'
+      , superPower: 'strength'
+    }
+    
+    var mecha
+      , lecha
+      , hiney
+    ```
 
 
 ### Semicolons
