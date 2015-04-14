@@ -148,7 +148,7 @@ Linting is **always a great idea**. Don't use a linter that's super opinionated 
     ```javascript
     // bad
     function setSidebar(){
-      $('.sidebar').hide()
+      $('.sidebar').addClass('hidden')
 
       // …stuff…
 
@@ -160,7 +160,7 @@ Linting is **always a great idea**. Don't use a linter that's super opinionated 
     // good
     function setSidebar(){
       var $sidebar = $('.sidebar')
-      $sidebar.hide()
+      $sidebar.addClass('hidden')
 
       // …stuff…
 
@@ -175,16 +175,16 @@ Linting is **always a great idea**. Don't use a linter that's super opinionated 
 
     ```javascript
     // bad
-    $('ul', '.sidebar').hide()
+    $('ul', '.sidebar').addClass('hidden')
 
     // bad
-    $('.sidebar').find('ul').hide()
+    $('.sidebar').find('ul').addClass('hidden')
 
     // good
-    $('.sidebar ul').hide()
+    $('.sidebar ul').addClass('hidden')
 
     // good
-    $('.sidebar > ul').hide()
+    $('.sidebar > ul').addClass('hidden')
 
     // good
     $sidebar.find('ul')
@@ -355,8 +355,8 @@ function onThingHappended(cb){
     + `undefined`
 
     ```javascript
-    var foo = 1
-      , bar = foo
+    const foo = 1
+    let bar = foo
 
     bar = 9
 
@@ -369,14 +369,59 @@ function onThingHappended(cb){
     + `function`
 
     ```javascript
-    var foo = [1, 2]
-      , bar = foo
+    const foo = [1, 2]
+    const bar = foo
 
     bar[0] = 9
 
     console.log(foo[0], bar[0]) // => 9, 9
     ```
 
+### References
+
+  - Use `const` for all of your references; avoid using `var`.
+
+  > Why? This ensures that you can't reassign your references (mutation), which can lead to bugs and difficult to comprehend code.
+
+    ```javascript
+    // bad
+    var a = 1;
+    var b = 2;
+
+    // good
+    const a = 1;
+    const b = 2;
+    ```
+
+  - If you must mutate references, use `let` instead of `var`.
+
+  > Why? `let` is block-scoped rather than function-scoped like `var`.
+
+    ```javascript
+    // bad
+    var count = 1;
+    if (true) {
+      count += 1;
+    }
+
+    // good, use the let.
+    let count = 1;
+    if (true) {
+      count += 1;
+    }
+    ```
+
+  - Note that both `let` and `const` are block-scoped.
+
+    ```javascript
+    // const and let only exist in the blocks they are defined in.
+    {
+      let a = 1;
+      const b = 1;
+    }
+    console.log(a); // ReferenceError
+    console.log(b); // ReferenceError
+    ```
 
 ### Objects
 
@@ -384,23 +429,23 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var item = new Object()
+    const item = new Object()
 
     // good
-    var item = {}
+    const item = {}
     ```
 
   - Don't use [reserved words](http://es5.github.io/#x7.6.1) as keys. It won't work in IE8. [More info](https://github.com/airbnb/javascript/issues/61)
 
     ```javascript
     // bad
-    var superman = {
+    const superman = {
       default: {clark: 'kent'}
       , private: true
     }
 
     // good
-    var superman = {
+    const superman = {
       defaults: {clark: 'kent'}
       , hidden: true
     }
@@ -410,18 +455,112 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var superman = {
+    const superman = {
       class: 'alien'
     }
 
     // bad
-    var superman = {
+    const superman = {
       klass: 'alien'
     }
 
     // good
-    var superman = {
+    const superman = {
       type: 'alien'
+    }
+    ```
+
+- Use computed property names when creating objects with dynamic property names.
+
+  > Why? They allow you to define all the properties of an object in one place.
+
+    ```javascript
+
+    function getKey(k) {
+      return `a key named ${k}`
+    }
+
+    // bad
+    const obj = {
+      id: 5,
+      name: 'San Francisco'
+    }
+    obj[getKey('enabled')] = true
+
+    // good
+    const obj = {
+      id: 5,
+      name: 'San Francisco',
+      [getKey('enabled')]: true
+    }
+    ```
+
+  - Use object method shorthand.
+
+    ```javascript
+    // bad
+    const atom = {
+      value: 1,
+
+      addValue: function addValue (value) {
+        return atom.value + value
+      }
+    }
+
+    // good
+    const atom = {
+      value: 1,
+
+      addValue(value) {
+        return atom.value + value
+      }
+    }
+    ```
+
+  - Use property value shorthand.
+
+  > Why? It is shorter to write and descriptive.
+
+    ```javascript
+    const lukeSkywalker = 'Luke Skywalker'
+
+    // bad
+    const obj = {
+      lukeSkywalker: lukeSkywalker
+    }
+
+    // good
+    const obj = {
+      lukeSkywalker
+    }
+    ```
+
+  - Group your shorthand properties at the beginning of your object declaration.
+
+  > Why? It's easier to tell which properties are using the shorthand.
+
+    ```javascript
+    const anakinSkywalker = 'Anakin Skywalker'
+    const lukeSkywalker = 'Luke Skywalker'
+
+    // bad
+    const obj = {
+      episodeOne: 1,
+      twoJedisWalkIntoACantina: 2,
+      lukeSkywalker,
+      episodeThree: 3,
+      mayTheFourth: 4,
+      anakinSkywalker
+    }
+
+    // good
+    const obj = {
+      lukeSkywalker,
+      anakinSkywalker,
+      episodeOne: 1,
+      twoJedisWalkIntoACantina: 2,
+      episodeThree: 3,
+      mayTheFourth: 4
     }
     ```
 
@@ -431,16 +570,16 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var items = new Array()
+    const items = new Array()
 
     // good
-    var items = []
+    const items = []
     ```
 
   - If you don't know array length use Array#push.
 
     ```javascript
-    var someStack = []
+    const someStack = []
 
     // bad
     someStack[someStack.length] = 'abracadabra'
@@ -449,32 +588,91 @@ function onThingHappended(cb){
     someStack.push('abracadabra')
     ```
 
-  - When you need to copy an array use Array#slice. [jsPerf](http://jsperf.com/converting-arguments-to-an-array/7)
+  - Use array spreads `...` to copy arrays.
 
     ```javascript
-    var len = items.length
-      , itemsCopy = []
-      , i
-
     // bad
-    for (i = 0; i < len; i++){
-      itemsCopy[i] = items[i]
+    const len = items.length
+    const itemsCopy = []
+
+    for (let i = 0; i < len; i++) {
+      itemsCopy[i] = items[i];
     }
 
     // good
-    itemsCopy = items.slice()
+    const itemsCopy = [...items];
     ```
 
-  - To convert an array-like object to an array, use Array#slice.
+  - To convert an array-like object to an array, use Array#from.
 
     ```javascript
-    function trigger(){
-      var args = Array.prototype.slice.call(arguments)
-      …
+    const foo = document.querySelectorAll('.foo');
+    const nodes = Array.from(foo);
+    ```
+
+### Destructuring
+
+  - Use object destructuring when accessing and using multiple properties of an object.
+
+  > Why? Destructuring saves you from creating temporary references for those properties.
+
+    ```javascript
+    // bad
+    function getFullName(user) {
+      const firstName = user.firstName
+      const lastName = user.lastName
+
+      return `${firstName} ${lastName}`
+    }
+
+    // good
+    function getFullName(obj) {
+      const { firstName, lastName } = obj
+      return `${firstName} ${lastName}`
+    }
+
+    // best
+    function getFullName({ firstName, lastName }) {
+      return `${firstName} ${lastName}`
     }
     ```
 
+  - Use array destructuring.
 
+    ```javascript
+    const arr = [1, 2, 3, 4]
+
+    // bad
+    const first = arr[0]
+    const second = arr[1]
+
+    // good
+    const [first, second] = arr
+    ```
+
+  - Use object destructuring for multiple return values, not array destructuring.
+
+  > Why? You can add new properties over time or change the order of things without breaking call sites.
+
+    ```javascript
+    // bad
+    function processInput(input) {
+      // then a miracle occurs
+      return [left, right, top, bottom]
+    }
+
+    // the caller needs to think about the order of return data
+    const [left, __, top] = processInput(input)
+
+    // good
+    function processInput(input) {
+      // then a miracle occurs
+      return { left, right, top, bottom }
+    }
+
+    // the caller selects only the data they need
+    const { left, right } = processInput(input)
+    ```
 
 ### Strings
 
@@ -482,145 +680,164 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var name = "Bob Parr"
+    const name = "Bob Parr"
 
     // good
-    var name = 'Bob Parr'
+    const name = 'Bob Parr'
 
     // bad
-    var fullName = "Bob " + this.lastName
+    const fullName = "Bob " + this.lastName
 
     // good
-    var fullName = 'Bob ' + this.lastName
+    const fullName = 'Bob ' + this.lastName
     ```
 
-  - Strings longer than 80 characters should be written across multiple lines using string concatenation.
-  - Note: If overused, long strings with concatenation could impact performance. [jsPerf](http://jsperf.com/ya-string-concat) & [Discussion](https://github.com/airbnb/javascript/issues/40)
+  - Strings longer than 80 characters should use string templates.
 
     ```javascript
     // bad
-    var errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.'
+    const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.'
 
     // bad
-    var errorMessage = 'This is a super long error that \
+    const errorMessage = 'This is a super long error that \
     was thrown because of Batman. \
     When you stop to think about \
     how Batman had anything to do \
     with this, you would get nowhere \
     fast.'
 
-    // good
-    var errorMessage = 'This is a super long error that ' +
+    // bad
+    const errorMessage = 'This is a super long error that ' +
       'was thrown because of Batman. ' +
       'When you stop to think about ' +
       'how Batman had anything to do ' +
       'with this, you would get nowhere ' +
       'fast.'
+
+    // good
+    const errorMessage = `This is a super long error that
+      was thrown because of Batman.
+      When you stop to think about
+      how Batman had anything to do
+      with this, you would get nowhere
+      fast.`
     ```
 
-  - When programatically building up a string, use Array#join instead of string concatenation. Mostly for IE: [jsPerf](http://jsperf.com/string-vs-array-concat/2).
+   - When programmatically building up strings, use template strings instead of concatenation.
+
+  > Why? Template strings give you a readable, concise syntax with proper newlines and string interpolation features.
 
     ```javascript
-    var items
-      , messages
-      , length
-      , i
-
-    messages = [{
-      state: 'success'
-      , message: 'This one worked.'
-    },{
-      state: 'success'
-      , message: 'This one worked as well.'
-    },{
-        state: 'error',
-        , message: 'This one did not work.'
-    }]
-
-    length = messages.length
+    // bad
+    function sayHi(name) {
+      return 'How are you, ' + name + '?'
+    }
 
     // bad
-    function inbox(messages){
-      items = '<ul>'
-
-      for (i = 0; i < length; i++){
-        items += '<li>' + messages[i].message + '</li>'
-      }
-
-      return items + '</ul>'
+    function sayHi(name) {
+      return ['How are you, ', name, '?'].join()
     }
 
     // good
-    function inbox(messages){
-      items = []
-
-      for (i = 0; i < length; i++){
-        items[i] = messages[i].message
-      }
-
-      return '<ul><li>' + items.join('</li><li>') + '</li></ul>'
+    function sayHi(name) {
+      return `How are you, ${name}?`
     }
     ```
-
 
 
 ### Functions
 
+- Use function declarations instead of function expressions.
+
+  > Why? Function declarations are named, so they're easier to identify in call stacks. Function declarations that aren't assigned to a variable are hoisted and can lead to expected bugs.
+
+    ```javascript
+    // bad
+    const foo = function () { }
+
+    // bad
+    function foo() { }
+
+    // good
+    const foo = function foo () { }
+    ```
+
   - Function expressions:
 
     ```javascript
-    // anonymous function expression
-    var anonymous = function(){
-      return true
-    }
-
-    // named function expression
-    var named = function named (){
-      return true
-    }
-
     // immediately-invoked function expression (IIFE)
-    (function(){
-      console.log('Welcome to the Internet. Please follow me.')
+    (() => {
+      console.log('Welcome to the Internet. Please follow me.');
     })()
     ```
 
-  - Never declare a function in a non-function block (if, while, etc). Assign the function to a variable instead. Browsers will allow you to do it, but they all interpret it differently, which is bad news bears.
+  - Never declare a function in a non-function block (if, while, etc). Assign the function to a variable instead. Browsers will allow you to do it, but they all interpret it differently, which is bad news bears. It's also slower.
   - **Note:** ECMA-262 defines a `block` as a list of statements. A function declaration is not a statement. [Read ECMA-262's note on this issue](http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf#page=97).
 
     ```javascript
     // bad
-    if (currentUser){
-      function test (){
+    if (currentUser) {
+      function test() {
         console.log('Nope.')
       }
     }
 
     // good
-    var test
-    if (currentUser){
-      test = function test (){
+    let test;
+    if (currentUser) {
+      test = () => {
         console.log('Yup.')
       }
     }
     ```
 
-  - Never name a parameter `arguments`, this will take precedence over the `arguments` object that is given to every function scope.
+  - Never name a parameter `arguments`, this will take precedence over the `arguments` object that is given to every function scope. It's also more efficient to use rest parameters.
+
+  > Why? `...` is explicit about which arguments you want pulled. Plus rest arguments are a real Array and not Array-like like `arguments`.
 
     ```javascript
     // bad
-    function nope(name, options, arguments){
-      // …stuff…
+    const nope = function nope(name, options, arguments) {
+      // ...stuff...
+    }
+
+    // bad
+    const concatenateAll = function concatenateAll() {
+      const args = Array.prototype.slice.call(arguments);
+      return args.join('')
     }
 
     // good
-    var yup = function yup (name, options, args){
-      // …stuff…
+    const yup = function yup(name, options, ...args) {
+      return args.join('')
     }
     ```
 
-  - **Always prefer named functions** This makes debugging much easier.
-  - You should assign a function to a variable. This makes hoisting easier to reason about.
+  - Use default parameter syntax rather than mutating function arguments.
+
+    ```javascript
+    // really bad
+    const handleThings = function handleThings(opts) {
+      // No! We shouldn't mutate function arguments.
+      // Double bad: if opts is falsey it'll be set to an object which may
+      // be what you want but it can introduce subtle bugs.
+      opts = opts || {}
+      // ...
+    }
+
+    // still bad
+    const handleThings = function handleThings(opts) {
+      if (opts === void 0) {
+        opts = {}
+      }
+      // ...
+    }
+
+    // good
+    const handleThings = function handleThings(opts = {}) {
+      // ...
+    }
+    ```
 
   - Never put spaces immediately after an opening parens or immediately before a closing parens.
 
@@ -654,8 +871,196 @@ function onThingHappended(cb){
       }
       ```
 
+  - When you must use function expressions (as when passing an anonymous function), use arrow function notation.
+
+  > Why? It creates a version of the function that executes in the context of `this`, which is usually what you want, and is a more concise syntax.
+
+  > Why not? If you have a fairly complicated function, you might move that logic out into its own function declaration.
+
+    ```javascript
+    // bad
+    [1, 2, 3].map(function square (x) {
+      return x * x
+    })
+
+    // good
+    [1, 2, 3].map((x) => x * x)
+
+    // good
+    const square = function square (x) {
+      return x * x
+    }
+    [1, 2, 3].map(square)
+    ```
+
+  - If the function body fits on one line, feel free to omit the braces and use implicit return. Otherwise, add the braces and use a `return` statement.
+
+  > Why? Syntactic sugar. It reads well when multiple functions are chained together.
+
+  > Why not? If you plan on returning an object.
+
+    ```javascript
+    // good
+    [1, 2, 3].map((x) => x * x)
+
+    // good
+    [1, 2, 3].map((x) => {
+      return { number: x }
+    })
+    ```
+
+  - Always use parentheses around the arguments. Omitting the parentheses makes the functions less readable and only works for single arguments.
+
+  > Why? These declarations read better with parentheses. They are also required when you have multiple parameters so this enforces consistency.
+
+    ```javascript
+    // bad
+    [1, 2, 3].map(x => x * x)
+
+    // good
+    [1, 2, 3].map((x) => x * x)
+    ```
 
 
+### Constructors
+  - Always use `class`. Avoid manipulating `prototype` directly.
+
+  > Why? `class` syntax is more concise and easier to reason about.
+
+    ```javascript
+    // bad
+    function Queue(contents = []) {
+      this._queue = [...contents]
+    }
+    Queue.prototype.pop = function() {
+      const value = this._queue[0]
+      this._queue.splice(0, 1)
+      return value
+    }
+
+
+    // good
+    class Queue {
+      constructor(contents = []) {
+        this._queue = [...contents]
+      }
+      , pop() {
+        const value = this._queue[0]
+        this._queue.splice(0, 1)
+        return value
+      }
+    }
+    ```
+
+  - Use `extends` for inheritance.
+
+  > Why? It is a built-in way to inherit prototype functionality without breaking `instanceof`. Though, you probably want to use composition instead on inheritance.
+
+    ```javascript
+    // bad
+    const inherits = require('inherits')
+    function PeekableQueue(contents) {
+      Queue.apply(this, contents)
+    }
+    inherits(PeekableQueue, Queue)
+    PeekableQueue.prototype.peek = function() {
+      return this._queue[0]
+    }
+
+    // good
+    class PeekableQueue extends Queue {
+      peek() {
+        return this._queue[0]
+      }
+    }
+    ```
+
+  - Methods can return `this` to help with method chaining.
+
+    ```javascript
+    // bad
+    Jedi.prototype.jump = function() {
+      this.jumping = true
+      return true
+    };
+
+    Jedi.prototype.setHeight = function(height) {
+      this.height = height
+    }
+
+    const luke = new Jedi()
+    luke.jump() // => true
+    luke.setHeight(20) // => undefined
+
+    // good
+    class Jedi {
+      jump() {
+        this.jumping = true
+        return this
+      }
+
+      , setHeight(height) {
+        this.height = height
+        return this
+      }
+    }
+
+    const luke = new Jedi()
+
+    luke.jump()
+      .setHeight(20)
+    ```
+
+
+  - It's okay to write a custom toString() method, just make sure it works successfully and causes no side effects.
+
+    ```javascript
+    class Jedi {
+      contructor(options = {name: 'no name'}) {
+        this.name = options.name
+      }
+
+      , getName() {
+        return this.name
+      }
+
+      , toString() {
+        return `Jedi - ${this.getName()}`
+      }
+    }
+    ```
+
+
+### Iterators and Generators
+
+  - Don't use iterators. Prefer JavaScript's higher-order functions like `map()` and `reduce()` instead of loops like `for-of`.
+
+  > Why? This enforces our immutable rule. Dealing with pure functions that return values is easier to reason about than side-effects.
+
+    ```javascript
+    const numbers = [1, 2, 3, 4, 5]
+
+    // bad
+    let sum = 0
+    for (let num of numbers) {
+      sum += num
+    }
+
+    sum === 15
+
+    // good
+    let sum = 0
+    numbers.forEach((num) => sum += num)
+    sum === 15
+
+    // best (use the functional force)
+    const sum = numbers.reduce((total, num) => total + num, 0)
+    sum === 15
+    ```
+
+  - Don't use generators.
+
+  > Why? They don't transpile well to ES5.
 
 ### Properties
 
@@ -693,92 +1098,89 @@ function onThingHappended(cb){
 
 ### Variables
 
-  - Always use `var` to declare variables. Not doing so will result in global variables. We want to avoid polluting the global namespace. Captain Planet warned us of that.
+- Always use `const` to declare variables. Not doing so will result in global variables. We want to avoid polluting the global namespace. Captain Planet warned us of that.
 
     ```javascript
     // bad
     superPower = new SuperPower()
 
     // good
-    var superPower = new SuperPower()
+    const superPower = new SuperPower()
     ```
 
-  - Use one `var` declaration for multiple variables and declare each variable on a newline.
+  - Use one `const` declaration per variable.
+
+    > Why? It's easier to add new variable declarations this way, and you never have to worry about a `,` or introducing punctuation-only diffs.
 
     ```javascript
     // bad
-    var items = getItems()
-    var goSportsTeam = true
-    var dragonball = 'z'
+    const items = getItems(),
+        goSportsTeam = true,
+        dragonball = 'z'
+
+    // bad
+    // (compare to above, and try to spot the mistake)
+    const items = getItems(),
+        goSportsTeam = true
+        dragonball = 'z'
 
     // good
-    var items = getItems()
-      , goSportsTeam = true
-      , dragonball = 'z'
+    const items = getItems()
+    const goSportsTeam = true
+    const dragonball = 'z'
     ```
 
-  - Declare unassigned variables last. This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables. You should give "unassigned" variables a default value. This allows modern JS engines like V8 to better optimize. It also makes the code more readable.
+  - Group all your `const`s and then group all your `let`s.
+
+  > Why? This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables.
 
     ```javascript
     // bad
-    var i, len, dragonball
-      , items = getItems()
-      , goSportsTeam = true
+    let i, len, dragonball,
+        items = getItems(),
+        goSportsTeam = true
 
     // bad
-    var i, items = getItems()
-      , dragonball
-      , goSportsTeam = true
-      , len
+    let i
+    const items = getItems()
+    let dragonball
+    const goSportsTeam = true
+    let len
 
     // good
-    var items = getItems()
-      , goSportsTeam = true
-      , dragonball = {}
-      , length = 0
-      , i = 0
+    const goSportsTeam = true
+    const items = getItems()
+    let dragonball
+    let i
+    let length
     ```
 
-  - Assign variables at the top of their scope. This helps avoid issues with variable declaration and assignment hoisting related issues.
+  - Assign variables where you need them, but place them in a reasonable place.
+
+  > Why? `let` and `const` are block scoped and not function scoped.
 
     ```javascript
-    // bad
-    function(){
+    // good
+    const up = function up () {
       test()
       console.log('doing stuff..')
 
       //..other stuff..
 
-      var name = getName()
+      const name = getName();
 
-      if (name === 'test'){
+      if (name === 'test') {
         return false
       }
 
       return name
     }
 
-    // good
-    function(){
-      var name = getName()
-
-      test()
-      console.log('doing stuff..')
-
-      //..other stuff..
-
-      if (name === 'test'){
-        return false
-      }
-
-      return name
-    }
-
     // bad
-    function(){
-      var name = getName()
+    const up = function up () {
+      const name = getName()
 
-      if (!arguments.length){
+      if (!arguments.length) {
         return false
       }
 
@@ -786,12 +1188,12 @@ function onThingHappended(cb){
     }
 
     // good
-    function(){
-      if (!arguments.length){
+    const up = function up () {
+      if (!arguments.length) {
         return false
       }
 
-      var name = getName()
+      const name = getName()
 
       return true
     }
@@ -801,12 +1203,12 @@ function onThingHappended(cb){
 
 ### Hoisting
 
-  - Variable declarations get hoisted to the top of their scope, their assignment does not.
+  - `var` declarations get hoisted to the top of their scope, their assignment does not. `const` and `let` declarations are blessed with a new concept called [Temporal Dead Zones (TDZ)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let). It's important to know why [typeof is no longer safe](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15).
 
     ```javascript
     // we know this wouldn't work (assuming there
     // is no notDefined global variable)
-    function example(){
+    function example() {
       console.log(notDefined) // => throws a ReferenceError
     }
 
@@ -814,18 +1216,25 @@ function onThingHappended(cb){
     // reference the variable will work due to
     // variable hoisting. Note: the assignment
     // value of `true` is not hoisted.
-    function example(){
+    function example() {
       console.log(declaredButNotAssigned) // => undefined
       var declaredButNotAssigned = true
     }
 
     // The interpreter is hoisting the variable
-    // declaration to the top of the scope.
-    // Which means our example could be rewritten as:
-    function example(){
-      var declaredButNotAssigned
+    // declaration to the top of the scope,
+    // which means our example could be rewritten as:
+    function example() {
+      let declaredButNotAssigned
       console.log(declaredButNotAssigned) // => undefined
       declaredButNotAssigned = true
+    }
+
+    // using const and let
+    function example() {
+      console.log(declaredButNotAssigned) // => throws a ReferenceError
+      console.log(typeof declaredButNotAssigned) // => throws a ReferenceError
+      const declaredButNotAssigned = true
     }
     ```
 
@@ -888,7 +1297,7 @@ function onThingHappended(cb){
 
 
 
-### Conditional Expressions & Equality [conditional-expressions]
+### Comparison Operators & Equality [comparison-operators-equality]
 
   - Use `===` and `!==` over `==` and `!=`.
   - Conditional expressions are evaluated using coercion with the `ToBoolean` method and always follow these simple rules:
@@ -957,8 +1366,9 @@ function onThingHappended(cb){
     if (test && test.arg === doSomethingWith(5) && puppies() === 'cute') ciderHouse = true
 
     // good
-    if (test && test.arg === doSomethingWith(5) && puppies() === 'cute')
+    if (test && test.arg === doSomethingWith(5) && puppies() === 'cute'){
       ciderHouse = true
+    }
 
     // bad
     function(){ return false }
@@ -1070,17 +1480,17 @@ function onThingHappended(cb){
     ```javascript
     // bad
     function(){
-    ∙∙∙∙var name
+    ∙∙∙∙const name
     }
 
     // bad
     function(){
-    ∙var name
+    ∙const name
     }
 
     // good
     function(){
-    ∙∙var name
+    ∙∙const name
     }
     ```
 
@@ -1114,10 +1524,10 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var x=y+5
+    const x=y+5
 
     // good
-    var x = y + 5
+    const x = y + 5
     ```
 
   - Place an empty newline at the end of the file.
@@ -1152,13 +1562,13 @@ function onThingHappended(cb){
         .updateCount()
 
     // bad
-    var leds = stage.selectAll('.led').data(data).enter().append('svg:svg').class('led', true)
+    const leds = stage.selectAll('.led').data(data).enter().append('svg:svg').class('led', true)
         .attr('width',  (radius + margin) * 2).append('svg:g')
         .attr('transform', 'translate(' + (radius + margin) + ',' + (radius + margin) + ')')
         .call(tron.led)
 
     // good
-    var leds = stage.selectAll('.led')
+    const leds = stage.selectAll('.led')
         .data(data)
       .enter().append('svg:svg')
         .class('led', true)
@@ -1168,6 +1578,42 @@ function onThingHappended(cb){
         .call(tron.led)
     ```
 
+- Leave a blank line after blocks and before the next statement
+
+    ```javascript
+    // bad
+    if (foo) {
+      return bar
+    }
+    return baz
+
+    // good
+    if (foo) {
+      return bar
+    }
+
+    return baz
+
+    // bad
+    const obj = {
+      foo: function() {
+      }
+      , bar: function() {
+      }
+    }
+    return obj
+
+    // good
+    const obj = {
+      foo: function() {
+      }
+
+      , bar: function() {
+      }
+    }
+
+    return obj
+    ```
 
 ### Commas
 
@@ -1176,17 +1622,17 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var once,
+    const once,
         upon,
         aTime
 
     // good
-    var once
+    const once
       , upon
       , aTime
 
     // bad
-    var hero = {
+    const hero = {
       firstName: 'Bob',
       lastName: 'Parr',
       heroName: 'Mr. Incredible',
@@ -1194,7 +1640,7 @@ function onThingHappended(cb){
     }
 
     // good
-    var hero = {
+    const hero = {
         firstName: 'Bob'
       , lastName: 'Parr'
       , heroName: 'Mr. Incredible'
@@ -1208,25 +1654,25 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var hero = {
+    const hero = {
       firstName: 'Kevin'
       , lastName: 'Flynn'
       ,
     }
 
-    var heroes = [
+    const heroes = [
       'Batman'
       , 'Superman'
       ,
     ]
 
     // good
-    var hero = {
+    const hero = {
       firstName: 'Kevin'
       , lastName: 'Flynn'
     }
 
-    var heroes = [
+    const heroes = [
       'Batman'
       , 'Superman'
     ]
@@ -1242,21 +1688,21 @@ function onThingHappended(cb){
     ```javascript
     // bad
     (function(){
-      var name = 'Skywalker';
+      const name = 'Skywalker';
       return name;
     })();
 
     // good
     (function(){
-      var name = 'Skywalker'
+      const name = 'Skywalker'
       return name
     })()
 
     // good
-    var a
+    const a
 
     ;(function(){
-      var name = 'Skywalker'
+      const name = 'Skywalker'
       return name
     })()
     ```
@@ -1270,40 +1716,40 @@ function onThingHappended(cb){
     //  => this.reviewScore = 9
 
     // bad
-    var totalScore = this.reviewScore + ''
+    const totalScore = this.reviewScore + ''
 
     // good
-    var totalScore = '' + this.reviewScore
+    const totalScore = '' + this.reviewScore
 
     // bad
-    var totalScore = '' + this.reviewScore + ' total score'
+    const totalScore = '' + this.reviewScore + ' total score'
 
     // good
-    var totalScore = this.reviewScore + ' total score'
+    const totalScore = this.reviewScore + ' total score'
     ```
 
   - Use `parseInt` for Numbers and always with a radix for type casting.
 
     ```javascript
-    var inputValue = '4'
+    const inputValue = '4'
 
     // bad
-    var val = new Number(inputValue)
+    const val = new Number(inputValue)
 
     // bad
-    var val = +inputValue
+    const val = +inputValue
 
     // bad
-    var val = inputValue >> 0
+    const val = inputValue >> 0
 
     // bad
-    var val = parseInt(inputValue)
+    const val = parseInt(inputValue)
 
     // good
-    var val = Number(inputValue)
+    const val = Number(inputValue)
 
     // better
-    var val = parseInt(inputValue, 10)
+    const val = parseInt(inputValue, 10)
     ```
 
   - If for whatever reason you are doing something wild and `parseInt` is your bottleneck and need to use Bitshift for [performance reasons](http://jsperf.com/coercion-vs-casting/3), leave a comment explaining why and what you're doing.
@@ -1356,17 +1802,17 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var OBJEcttsssss = {}
-    var this_is_my_object = {}
+    const OBJEcttsssss = {}
+    const this_is_my_object = {}
     function c(){}
-    var u = new user({
+    const u = new user({
       name: 'Bob Parr'
     })
 
     // good
-    var thisIsMyObject = {}
+    const thisIsMyObject = {}
     function thisIsMyFunction(){}
-    var user = new User({
+    const user = new User({
       name: 'Bob Parr'
     })
     ```
@@ -1379,7 +1825,7 @@ function onThingHappended(cb){
       this.name = options.name
     }
 
-    var bad = new user({
+    const bad = new user({
       name: 'nope'
     })
 
@@ -1388,7 +1834,7 @@ function onThingHappended(cb){
       this.name = options.name
     }
 
-    var good = new User({
+    const good = new User({
       name: 'yup'
     })
     ```
@@ -1409,7 +1855,7 @@ function onThingHappended(cb){
     ```javascript
     // bad
     function(){
-      var that = this
+      const that = this
       return function(){
         console.log(that)
       }
@@ -1417,7 +1863,7 @@ function onThingHappended(cb){
 
     // bad
     function(){
-      var _this = this
+      const _this = this
       return function(){
         console.log(_this)
       }
@@ -1425,13 +1871,13 @@ function onThingHappended(cb){
 
     // bad
     function(){
-      var self = this
+      const self = this
       self.thing = true
     }
 
     // good
     function(){
-      var self = this
+      const self = this
       this.thing = true
       return function(){
         console.log(self)
@@ -1443,12 +1889,12 @@ function onThingHappended(cb){
 
     ```javascript
     // bad
-    var log = function(msg){
+    const log = function(msg){
       console.log(msg)
     }
 
     // good
-    var log = function log (msg){
+    const log = function log (msg){
       console.log(msg)
     }
     ```
@@ -1506,90 +1952,145 @@ function onThingHappended(cb){
     }
     ```
 
+### Accessors
 
-
-### Constructors
-
-  - Assign methods to the prototype object, instead of overwriting the prototype with a new object. Overwriting the prototype makes inheritance impossible: by resetting the prototype you'll overwrite the base!
+  - Accessor functions for properties are not required.
+  - If you do make accessor functions use getVal() and setVal('hello').
 
     ```javascript
-    function Jedi(){
-      console.log('new jedi')
-    }
+    // bad
+    dragon.age()
+
+    // good
+    dragon.getAge()
 
     // bad
-    Jedi.prototype = {
-      fight: function fight (){
-        console.log('fighting')
-      },
+    dragon.age(25)
 
-      block: function block (){
-        console.log('blocking')
+    // good
+    dragon.setAge(25)
+    ```
+
+  - If the property is a boolean, use isVal() or hasVal().
+
+    ```javascript
+    // bad
+    if (!dragon.age()) {
+      return false
+    }
+
+    // good
+    if (!dragon.hasAge()) {
+      return false
+    }
+    ```
+
+  - It's okay to create get() and set() functions, but be consistent.
+
+    ```javascript
+    class Jedi {
+      constructor(options = {}) {
+        const lightsaber = options.lightsaber || 'blue'
+        this.set('lightsaber', lightsaber)
+      }
+
+      set(key, val) {
+        this[key] = val
+      }
+
+      get(key) {
+        return this[key]
       }
     }
-
-    // good
-    Jedi.prototype.fight = function fight (){
-      console.log('fighting')
-    }
-
-    Jedi.prototype.block = function block (){
-      console.log('blocking')
-    }
     ```
 
-  - Methods can return `this` to help with method chaining.
+### Events
+
+  - When attaching data payloads to events (whether DOM events or something more proprietary like Backbone events), pass a hash instead of a raw value. This allows a subsequent contributor to add more data to the event payload without finding and updating every handler for the event. For example, instead of:
 
     ```javascript
     // bad
-    Jedi.prototype.jump = function(){
-      this.jumping = true
-      return true
-    }
+    $(this).trigger('listingUpdated', listing.id)
 
-    Jedi.prototype.setHeight = function(height){
-      this.height = height
-    }
+    ...
 
-    var luke = new Jedi()
-    luke.jump() // => true
-    luke.setHeight(20) // => undefined
-
-    // good
-    Jedi.prototype.jump = function(){
-      this.jumping = true
-      return this
-    }
-
-    Jedi.prototype.setHeight = function(height){
-      this.height = height
-      return this
-    }
-
-    var luke = new Jedi()
-
-    luke.jump()
-      .setHeight(20)
+    $(this).on('listingUpdated', function(e, listingId) {
+      // do something with listingId
+    })
     ```
 
-
-  - It's okay to write a custom toString() method, just make sure it works successfully and causes no side effects.
+    prefer:
 
     ```javascript
-    function Jedi(options){
-      options || (options = {})
-      this.name = options.name || 'no name'
+    // good
+    $(this).trigger('listingUpdated', { listingId : listing.id })
+
+    ...
+
+    $(this).on('listingUpdated', function(e, data) {
+      // do something with data.listingId
+    })
+    ```
+
+
+### jQuery
+
+  - Prefix jQuery object variables with a `$`.
+
+    ```javascript
+    // bad
+    const sidebar = $('.sidebar')
+
+    // good
+    const $sidebar = $('.sidebar')
+    ```
+
+  - Cache jQuery lookups.
+
+    ```javascript
+    // bad
+    function setSidebar() {
+      $('.sidebar').addClass('hidden')
+
+      // ...stuff...
+
+      $('.sidebar').css({
+        'background-color': 'pink'
+      })
     }
 
-    Jedi.prototype.getName = function getName (){
-      return this.name
-    }
+    // good
+    function setSidebar() {
+      const $sidebar = $('.sidebar')
+      $sidebar.addClass('hidden')
 
-    Jedi.prototype.toString = function toString (){
-      return 'Jedi - ' + this.getName()
+      // ...stuff...
+
+      $sidebar.css({
+        'background-color': 'pink'
+      })
     }
     ```
 
+  - For DOM queries use Cascading `$('.sidebar ul')` or parent > child `$('.sidebar > ul')`. [jsPerf](http://jsperf.com/jquery-find-vs-context-sel/16)
+  - Use `find` with scoped jQuery object queries.
+
+    ```javascript
+    // bad
+    $('ul', '.sidebar').addClass('hidden')
+
+    // bad
+    $('.sidebar').find('ul').addClass('hidden')
+
+    // good
+    $('.sidebar ul').addClass('hidden')
+
+    // good
+    $('.sidebar > ul').addClass('hidden')
+
+    // good
+    $sidebar.find('ul').addClass('hidden')
+    ```
 
 
 ## Resources
@@ -1598,6 +2099,16 @@ function onThingHappended(cb){
 ### Read This [read-this]
 
   - [Annotated ECMAScript 5.1](http://es5.github.com/)
+
+### Performance
+
+  - [On Layout & Web Performance](http://kellegous.com/j/2013/01/26/layout-performance/)
+  - [String vs Array Concat](http://jsperf.com/string-vs-array-concat/2)
+  - [Try/Catch Cost In a Loop](http://jsperf.com/try-catch-in-loop-cost)
+  - [Bang Function](http://jsperf.com/bang-function)
+  - [jQuery Find vs Context, Selector](http://jsperf.com/jquery-find-vs-context-sel/13)
+  - [innerHTML vs textContent for script text](http://jsperf.com/innerhtml-vs-textcontent-for-script-text)
+  - [Long String Concatenation](http://jsperf.com/ya-string-concat)
 
 ### Other Styleguides [other-styleguides]
 
