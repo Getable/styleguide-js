@@ -289,15 +289,15 @@ Use `||` to define a default value. If the left-hand value is [falsy][29] then t
 
 ```js
 function a(value){
-  var defaultValue = 33
-  var used = value || defaultValue
+  const defaultValue = 33
+  const used = value || defaultValue
 }
 ```
 
 Use `.bind` to [partially-apply](http://ejohn.org/blog/partial-functions-in-javascript/) functions.
 
 ```js
-var sum = function sum(a, b){
+const sum = function sum(a, b){
     return a + b
   }
   , addSeven = sum.bind(null, 7)
@@ -306,16 +306,20 @@ addSeven(6)
 // <- 13
 ```
 
-Use `Array.prototype.slice.call` to cast array-like objects to true arrays.
+Use `Array.prototype.slice.call` to cast array-like objects to true arrays. (Though, it's better to use rest parameters)
 
 ```js
-var args = [].slice.call(arguments)
+// tricky
+const args = [].slice.call(arguments)
+
+// better
+const fn = (...args) => args
 ```
 
 Use [event emitters](https://github.com/bevacqua/contra#%CE%BBemitterthing-options) on all the things!
 
 ```js
-var emitter = new Backbone.Events()
+const emitter = new Backbone.Events()
 
 $body.on('click', function onBodyClick(e){
   emitter.trigger('click', e.target)
@@ -595,7 +599,7 @@ function onThingHappended(cb){
     someStack.push('abracadabra')
     ```
 
-  - Use array spreads `...` to copy arrays.
+  - Use array spreads `...` to shallow copy arrays.
 
     ```javascript
     // bad
@@ -696,7 +700,7 @@ function onThingHappended(cb){
     const fullName = "Bob " + this.lastName
 
     // good
-    const fullName = 'Bob ' + this.lastName
+    const fullName = `Bob ${this.lastName}`
     ```
 
   - Strings longer than 80 characters should use string templates.
@@ -778,7 +782,28 @@ function onThingHappended(cb){
     })()
     ```
 
-  - Never declare a function in a non-function block (if, while, etc). Assign the function to a variable instead. Browsers will allow you to do it, but they all interpret it differently, which is bad news bears. It's also slower.
+  - Never declare a function in a non-function block (if, while, etc). Assign the function to a variable instead. Browsers will allow you to do it, but they all interpret it differently, which is bad news bears. It's also slower if in a loop or function call because the function has to be created on each call.
+
+    ```javascript
+    // bad
+    for (let i = 0, l = 10; i < l; i++){
+      const square = (num) => num * num
+      console.log(square(i))
+    }
+
+    // bad
+    [1, 2, 3].forEach((num) => {
+      const square = (num) => num * num
+      console.log(square(i))
+    })
+
+    // good
+    const square = (num) => num * num
+    for (let i = 0, l = 10; i < l; i++){
+      console.log(square(i))
+    }
+    ```
+
   - **Note:** ECMA-262 defines a `block` as a list of statements. A function declaration is not a statement. [Read ECMA-262's note on this issue](http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf#page=97).
 
     ```javascript
@@ -1373,7 +1398,7 @@ function onThingHappended(cb){
     if (test && test.arg === doSomethingWith(5) && puppies() === 'cute') ciderHouse = true
 
     // good
-    if (test && test.arg === doSomethingWith(5) && puppies() === 'cute'){
+    if (test && test.arg === doSomethingWith(5) && puppies() === 'cute') {
       ciderHouse = true
     }
 
@@ -1381,7 +1406,7 @@ function onThingHappended(cb){
     function(){ return false }
 
     // good
-    function(){
+    const fn = function fn (){
       return false
     }
     ```
